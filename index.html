@@ -27,12 +27,6 @@
         h1 {
             text-align: center;
             color: #2a5298;
-            margin-bottom: 10px;
-        }
-
-        p {
-            text-align: center;
-            color: #555;
         }
 
         ul {
@@ -77,23 +71,35 @@
 
 <div class="container">
     <h1>Student Assignment Submission Portal</h1>
-    <p>Below are the submitted assignments:</p>
 
-    <ul>
-        <li>
-            <span>John Doe - Assignment 1</span>
-            <a href="#">View</a>
-        </li>
-        <li>
-            <span>Jane Smith - Assignment 1</span>
-            <a href="#">View</a>
-        </li>
-    </ul>
+    <ul id="submissionList"></ul>
 
     <footer>
         © 2026 Student Assignment Portal | DevOps Automated Deployment
     </footer>
 </div>
+
+<script>
+fetch('submissions.json')
+    .then(response => response.json())
+    .then(data => {
+        const list = document.getElementById('submissionList');
+
+        data.forEach(submission => {
+            const li = document.createElement('li');
+
+            li.innerHTML = `
+                <span>${submission.name} - ${submission.assignment}</span>
+                <a href="${submission.link}" target="_blank">View</a>
+            `;
+
+            list.appendChild(li);
+        });
+    })
+    .catch(error => {
+        console.error('Error loading submissions:', error);
+    });
+</script>
 
 </body>
 </html>
