@@ -2,18 +2,100 @@
 <html>
 <head>
     <title>Student Assignment Submission Portal</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            width: 600px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2a5298;
+            margin-bottom: 10px;
+        }
+
+        p {
+            text-align: center;
+            color: #555;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 30px;
+        }
+
+        li {
+            background: #f4f6f9;
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        a {
+            text-decoration: none;
+            background: #2a5298;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        a:hover {
+            background: #1e3c72;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 12px;
+            color: #888;
+        }
+    </style>
 </head>
+
 <body>
+
+<div class="container">
     <h1>Student Assignment Submission Portal</h1>
-	<p>New submission added via automated pipeline.</p>
-	
-   	<p>Below are the submitted assignments:</p>
+    <p>Below are the submitted assignments:</p>
 
     <ul>
-        <li>John Doe - Assignment 1 - <a href="#">View Submission</a></li>
-        <li>Jane Smith - Assignment 1 - <a href="#">View Submission</a></li>
+        <li>
+            <span>John Doe - Assignment 1</span>
+            <a href="#">View</a>
+        </li>
+        <li>
+            <span>Jane Smith - Assignment 1</span>
+            <a href="#">View</a>
+        </li>
     </ul>
+
+    <footer>
+        © 2026 Student Assignment Portal | DevOps Automated Deployment
+    </footer>
+</div>
 
 </body>
 </html>
+
 
