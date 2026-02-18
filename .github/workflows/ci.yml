@@ -19,3 +19,12 @@ jobs:
           ls -la
           echo "CI validation successful"
 
+      - name: Notify Slack
+        if: always()
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+          --data '{"text":"Student Assignment Portal CI Status: ${{ job.status }}"}' \
+          ${{ secrets.ASSIGNMENT_SLACK_WEBHOOK }}
+
+
+
