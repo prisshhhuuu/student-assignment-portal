@@ -46,6 +46,53 @@ jobs:
     steps:
       - name: Send Slack Deployment Alert
         run: |
-          curl -X POST -H 'Content-type: application/json' \
-          --data '{"text":"🚀 *Student Assignment Portal* CI pipeline finished with status: `${{ job.status }}`"}' \
-          ${{ secrets.SLACK_WEBHOOK_URL }}
+          STATUS="${{ job.status }}"
+          COLOR="#22C55E" # Green for success
+          if [ "$STATUS" != "success" ]; then
+            COLOR="#EF4444" # Red for failure
+          fi
+          
+          PAYLOAD=$(cat <<EOF
+          {
+            "attachments": [
+              {
+                "color": "$COLOR",
+                "blocks": [
+                  {
+                    "type": "header",
+                    "text": {
+                      "type": "plain_text",
+                      "text": "🚀 DevOps Deployment Alert",
+                      "emoji": true
+                    }
+                  },
+                  {
+                    "type": "section",
+                    "fields": [
+                      {
+                        "type": "mrkdwn",
+                        "text": "*Project:*\nStudent Assignment Portal"
+                      },
+                      {
+                        "type": "mrkdwn",
+                        "text": "*Status:*\n$STATUS"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "context",
+                    "elements": [
+                      {
+                        "type": "mrkdwn",
+                        "text": "Code passed CI validation and is deploying to Netlify ✨"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+          EOF
+          )
+          
+          curl -X POST -H 'Content-type: application/json' --data "$PAYLOAD" ${{ secrets.SLACK_WEBHOOK_URL }}
