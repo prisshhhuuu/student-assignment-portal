@@ -1,30 +1,51 @@
-name: CI Pipeline
+name: CI/CD Pipeline
 
 on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  build:
+  validate-and-test:
+    name: Validate Application
     runs-on: ubuntu-latest
-
+    
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Validate HTML file
+      - name: Checkout Code Repository
+        uses: actions/checkout@v4
+        
+      - name: Verify Core Files Existence
         run: |
-          echo "Checking project files..."
-          ls -la
-          echo "CI validation successful"
+          if [ ! -f index.html ]; then echo "❌ index.html not found!"; exit 1; fi
+          if [ ! -f style.css ]; then echo "❌ style.css not found!"; exit 1; fi
+          if [ ! -f script.js ]; then echo "❌ script.js not found!"; exit 1; fi
+          echo "✅ All core files are present!"
+          
+      - name: Validate HTML Structure
+        run: |
+          grep -i "<html" index.html > /dev/null || (echo "❌ Missing HTML tag" && exit 1)
+          grep -i "<body" index.html > /dev/null || (echo "❌ Missing BODY tag" && exit 1)
+          echo "✅ HTML structure looks good!"
 
-      - name: Notify Slack
-        if: always()
+      - name: Validate GSAP Import
+        run: |
+          grep -i "gsap.min.js" index.html > /dev/null || (echo "❌ Missing GSAP library" && exit 1)
+          echo "✅ GSAP is correctly imported for UI animations."
+
+      - name: CI Validation Success
+        run: echo "🚀 CI Pipeline passed! Ready for deployment."
+
+  notify-slack:
+    name: Slack Notification
+    needs: validate-and-test
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Send Slack Deployment Alert
         run: |
           curl -X POST -H 'Content-type: application/json' \
-          --data '{"text":"Student Assignment Portal CI Status: ${{ job.status }}"}' \
-          ${{ secrets.ASSIGNMENT_SLACK_WEBHOOK }}
-
-
-
+          --data '{"text":"🚀 *Student Assignment Portal* CI pipeline finished with status: `${{ job.status }}`"}' \
+          ${{ secrets.SLACK_WEBHOOK_URL }}
