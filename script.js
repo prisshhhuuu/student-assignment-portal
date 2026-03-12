@@ -55,7 +55,9 @@ function getFrequentStudent() {
 }
 
 // Data Fetching & Rendering
-function fetchData() {
+const API_URL = "https://script.google.com/macros/s/AKfycbwjmBguW7Of1BlHjlb-MZmP0f1i6t-wOlKWpXytK-Ak8x1qFJDDdkxksPR-f_mAPm_W/exec";
+
+async function fetchData() {
     const grid = document.getElementById("submissions-grid");
     const activity = document.getElementById("activity-list");
     
@@ -67,10 +69,25 @@ function fetchData() {
         </div>
     `;
 
-    // Simulate API Delay
-    setTimeout(() => {
-        renderSubmissions(mockSubmissions);
-        renderActivity(mockSubmissions);
+    try {
+        const response = await fetch(API_URL);
+        const rawData = await response.json();
+        
+        let formattedData = [];
+        if (Array.isArray(rawData)) {
+            // Map the google sheet responses to our internal format
+            formattedData = rawData.map((row, index) => ({
+                id: index,
+                name: row["Student Name"] || "Unknown Student",
+                assignment: row["Assignment Title"] || "Unknown Assignment",
+                link: row["Submission Link"] || "#",
+                // The timestamp from Google Forms
+                timestamp: row["Timestamp"] ? new Date(row["Timestamp"]) : new Date()
+            }));
+        }
+
+        renderSubmissions(formattedData);
+        renderActivity(formattedData);
         
         // Update Sync Status
         const now = new Date();
@@ -82,7 +99,16 @@ function fetchData() {
             { backgroundColor: "rgba(255, 255, 255, 0.03)", borderColor: "rgba(255, 255, 255, 0.1)", duration: 1.5, ease: "power2.out" }
         );
 
-    }, 1500);
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        grid.innerHTML = `
+            <div class="loading-wrapper" style="color: #EF4444;">
+                <i class="ph-bold ph-warning" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                <p>Failed to load data. Please check if the Google Sheet has data, or check the connection.</p>
+                <button class="btn-primary" onclick="fetchData()" style="margin-top: 1rem; padding: 0.5rem 1rem; font-size: 0.875rem;">Retry</button>
+            </div>
+        `;
+    }
 }
 
 function formatTimeAgo(date) {
