@@ -55,7 +55,7 @@ function getFrequentStudent() {
 }
 
 // Data Fetching & Rendering
-const API_URL = "https://script.google.com/macros/s/AKfycbwjmBguW7Of1BlHjlb-MZmP0f1i6t-wOlKWpXytK-Ak8x1qFJDDdkxksPR-f_mAPm_W/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbwWE1gjvSSe0p2Z8RuT-3-m6W_JZSjj6CnwStWdMv9703ah_n3egWl9CZTLxS6tXHor/exec";
 
 async function fetchData() {
     const grid = document.getElementById("submissions-grid");
@@ -79,8 +79,8 @@ async function fetchData() {
             formattedData = rawData.map((row, index) => ({
                 id: index,
                 name: row["Student Name"] || "Unknown Student",
-                assignment: row["Assignment Title"] || "Unknown Assignment",
-                link: row["Submission Link"] || "#",
+                assignment: row["Assignment Name"] || "Unknown Assignment", // Updated from Google Form Header
+                link: row["Submission Link (Google Drive / GitHub Link)"] || "#", // Updated from Google Form Header
                 // The timestamp from Google Forms
                 timestamp: row["Timestamp"] ? new Date(row["Timestamp"]) : new Date()
             }));
