@@ -3,125 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Assignment Portal</title>
-    <!-- Google Fonts for Modern Typography -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Phosphor Icons for modern vector icons -->
+    <title>Student Assignment Portal | Premium Dashboard</title>
+    <!-- Google Fonts: Outfit for display, Inter for body -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="app-container">
-        <!-- Sidebar Navigation -->
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <i class="ph-fill ph-student"></i>
-                <h2>Portal</h2>
-            </div>
-            
-            <nav class="sidebar-nav">
-                <a href="#" class="nav-item active">
-                    <i class="ph ph-squares-four"></i>
-                    <span>Dashboard</span>
-                </a>
-                <a href="#" class="nav-item">
-                    <i class="ph ph-file-text"></i>
-                    <span>Assignments</span>
-                </a>
-                <a href="#" class="nav-item">
-                    <i class="ph ph-chart-bar"></i>
-                    <span>Analytics</span>
-                </a>
-            </nav>
-
-            <div class="sidebar-footer">
-                <div class="user-profile">
-                    <div class="avatar">A</div>
-                    <div class="user-info">
-                        <span class="user-name">Admin</span>
-                        <span class="user-role">DevOps Instructor</span>
-                    </div>
-                </div>
-            </div>
-        </aside>
-
-        <!-- Main Content Area -->
-        <main class="main-content">
-            <header class="top-header">
-                <div>
-                    <h1 class="page-title">Recent Submissions</h1>
-                    <p class="page-subtitle">Track and review student assignments in real-time.</p>
-                </div>
-                
-                <div class="header-actions">
-                    <button class="btn btn-primary" id="refresh-btn">
-                        <i class="ph ph-arrows-clockwise"></i>
-                        Refresh Data
-                    </button>
-                </div>
-            </header>
-
-            <!-- Dashboard Stats Cards -->
-            <section class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon bg-blue">
-                        <i class="ph ph-users"></i>
-                    </div>
-                    <div class="stat-details">
-                        <h3>Total Submissions</h3>
-                        <p class="stat-number" id="total-count">--</p>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon bg-green">
-                        <i class="ph ph-check-circle"></i>
-                    </div>
-                    <div class="stat-details">
-                        <h3>Latest Assignment</h3>
-                        <p class="stat-number" id="latest-assignment">--</p>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon bg-purple">
-                        <i class="ph ph-clock-counter-clockwise"></i>
-                    </div>
-                    <div class="stat-details">
-                        <h3>Last Updated</h3>
-                        <p class="stat-number" style="font-size: 1.2rem;" id="last-updated">Just now</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Data Table Section -->
-            <section class="content-section">
-                <div class="table-container">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Student Name</th>
-                                <th>Assignment Title</th>
-                                <th>Submission Link</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="submissions-list">
-                            <!-- Data will be populated here via JavaScript -->
-                            <tr>
-                                <td colspan="5" class="loading-state">
-                                    <div class="spinner"></div>
-                                    <p>Loading student submissions from Google Sheets...</p>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-        </main>
+    
+    <!-- Animated Background Elements -->
+    <div class="bg-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
     </div>
 
-    <!-- GSAP for Animations -->
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+        <div class="logo">
+            <i class="ph-fill ph-student"></i>
+            <span>Portal.</span>
+        </div>
+        <div class="sync-status" id="sync-status">
+            <div class="pulse-dot"></div>
+            <span>Data synced: <strong id="last-updated">Just now</strong></span>
+        </div>
+    </nav>
+
+    <!-- SECTION 1: HERO -->
+    <section class="hero-section">
+        <h1 class="hero-title">
+            Your Assignments.<br>
+            <span class="gradient-text">Organized. Accessible. Automated.</span>
+        </h1>
+        <p class="hero-desc">
+            A smarter way to track and access assignment submissions.<br>
+            Automatically synced with Google Forms.
+        </p>
+        <button class="btn-primary" id="view-submissions-btn">
+            View Submissions <i class="ph-bold ph-arrow-down"></i>
+        </button>
+    </section>
+
+    <!-- MAIN DASHBOARD AREA -->
+    <main class="dashboard-container" id="dashboard">
+        
+        <div class="dashboard-grid">
+            
+            <!-- SECTION 2: LIVE SUBMISSIONS DASHBOARD (Cards) -->
+            <div class="submissions-section">
+                <div class="section-header">
+                    <h2>Live Submissions</h2>
+                    <div class="filter-controls">
+                        <button class="icon-btn" id="refresh-data" title="Refresh API Data">
+                            <i class="ph ph-arrows-clockwise"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="submissions-grid" id="submissions-grid">
+                    <!-- Cards will be generated by JS -->
+                </div>
+            </div>
+
+            <!-- SECTION 3: ACTIVITY FEED -->
+            <div class="activity-section">
+                <div class="section-header">
+                    <h2>Activity Feed</h2>
+                </div>
+                <div class="glass-panel">
+                    <ul class="activity-list" id="activity-list">
+                        <!-- Activity items generated by JS -->
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <p>&copy; 2026 Created by Prishu Raj Singh</p>
+            <p class="footer-subtitle">Powered by Google Apps Script & GitHub Actions</p>
+        </div>
+    </footer>
+
+    <!-- GSAP & JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
