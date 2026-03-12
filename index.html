@@ -4,15 +4,124 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Assignment Portal</title>
+    <!-- Google Fonts for Modern Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons for modern vector icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Student Assignment Submissions</h1>
-        <div id="submissions-list">
-            <p>Loading submissions...</p>
-        </div>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <i class="ph-fill ph-student"></i>
+                <h2>Portal</h2>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active">
+                    <i class="ph ph-squares-four"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="ph ph-file-text"></i>
+                    <span>Assignments</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="ph ph-chart-bar"></i>
+                    <span>Analytics</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="avatar">A</div>
+                    <div class="user-info">
+                        <span class="user-name">Admin</span>
+                        <span class="user-role">DevOps Instructor</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header class="top-header">
+                <div>
+                    <h1 class="page-title">Recent Submissions</h1>
+                    <p class="page-subtitle">Track and review student assignments in real-time.</p>
+                </div>
+                
+                <div class="header-actions">
+                    <button class="btn btn-primary" id="refresh-btn">
+                        <i class="ph ph-arrows-clockwise"></i>
+                        Refresh Data
+                    </button>
+                </div>
+            </header>
+
+            <!-- Dashboard Stats Cards -->
+            <section class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon bg-blue">
+                        <i class="ph ph-users"></i>
+                    </div>
+                    <div class="stat-details">
+                        <h3>Total Submissions</h3>
+                        <p class="stat-number" id="total-count">--</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon bg-green">
+                        <i class="ph ph-check-circle"></i>
+                    </div>
+                    <div class="stat-details">
+                        <h3>Latest Assignment</h3>
+                        <p class="stat-number" id="latest-assignment">--</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon bg-purple">
+                        <i class="ph ph-clock-counter-clockwise"></i>
+                    </div>
+                    <div class="stat-details">
+                        <h3>Last Updated</h3>
+                        <p class="stat-number" style="font-size: 1.2rem;" id="last-updated">Just now</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Data Table Section -->
+            <section class="content-section">
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Student Name</th>
+                                <th>Assignment Title</th>
+                                <th>Submission Link</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="submissions-list">
+                            <!-- Data will be populated here via JavaScript -->
+                            <tr>
+                                <td colspan="5" class="loading-state">
+                                    <div class="spinner"></div>
+                                    <p>Loading student submissions from Google Sheets...</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
     </div>
+
+    <!-- GSAP for Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
